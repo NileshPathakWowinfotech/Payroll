@@ -786,7 +786,16 @@ export default App = ({ navigation }) => {
   const dateSet = (date) => {
 
   }
+  country1=[
+    { label: 'Select', value: "-1" },
+    { label: 'England', value: "England" },
+    { label: 'Northern Ireland', value: "Northern Ireland" },
+    { label: 'Scotland', value: "Scotland" },
+    { label: 'Wales', value: "Wales" },
+    { label: 'Outside of UK', value: "Outside of UK" },
 
+    // {label: 'Other', value: 'o', icon: () => <Icon name="genderless" size={18} color="#900" />},
+  ]
 
   items2 = [
     { label: 'Select Gender', value: 'S', icon: () => <Icon name="genderless" size={18} color="#ff00aa" /> },
@@ -794,13 +803,14 @@ export default App = ({ navigation }) => {
     { label: 'Female', value: 'F', icon: () => <Icon name="venus" size={18} color="#ff00aa" /> },
     // {label: 'Other', value: 'o', icon: () => <Icon name="genderless" size={18} color="#900" />},
   ]
-
-  countrylist=[
+  nationality = [
     { label: 'Select', value: -1 },
     { label: 'British', value: 1 },
     { label: 'Non-British', value: 0 },
     // {label: 'Other', value: 'o', icon: () => <Icon name="genderless" size={18} color="#900" />},
-  ]
+  ]  
+
+
 
   return (
     <View style={styles.container}>
@@ -862,7 +872,7 @@ export default App = ({ navigation }) => {
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
-            iconColor='red'
+            iconColor='black'
             iconStyle={styles.iconStyle}
             data={items}
 
@@ -979,20 +989,15 @@ export default App = ({ navigation }) => {
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
-            iconColor='red'
+            iconColor='black'
             iconStyle={styles.iconStyle}
             data={items2}
-
-
             maxHeight={300}
-
             labelField="label"
             valueField="value"
             placeholder=""
             value={data.gender}
             onChange={item => {
-
-
               data.gender = item.value;
 
               if (data.title == 'Prof.' || data.title == 'Dr.') {
@@ -1003,19 +1008,10 @@ export default App = ({ navigation }) => {
               } else if (data.gender == 'F') {
                 data.title = 'Mrs.'
                 setTitle('Mrs.');
-
               }
-
-
               validGender(data.gender);
               return;
-
-
-
-
-
             }
-
             }
           // renderLeftIcon={() => (
           //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
@@ -1045,9 +1041,9 @@ export default App = ({ navigation }) => {
 
         </View>
 
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row' ,justifyContent:"space-between" , paddingTop: 20 }}>
           <Text style={styles.labelwidth}>Nationality:<Text style={{ color: 'red' }}></Text></Text>
-          <DropDownPicker
+          {/* <DropDownPicker
             items={[
               { label: 'Select', value: -1 },
               { label: 'British', value: 1 },
@@ -1062,8 +1058,33 @@ export default App = ({ navigation }) => {
             }}
             dropDownStyle={{ backgroundColor: '#ffffff' }}
             onChangeItem={(item) => data.IsABritish = item.value}
+          />  */}
+
+          <Dropdown
+            style={styles.dropdown}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconColor='black'
+            iconStyle={styles.iconStyle}
+            data={nationality}
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder=""
+            value={data.IsABritish}
+            onChange={item => {
+              data.IsABritish = item.value
+            }
+            }
+
           />
+
+
         </View>
+
+
+
 
 
         <View style={styles.flexrow1}>
@@ -1099,7 +1120,7 @@ export default App = ({ navigation }) => {
             maxLength={30} style={styles.inputBox} onChangeItem={(item) => data.address4 = item.value} placeholder='County' underlineColorAndroid='rgba(0,0,0,0)' />
         </View>
 
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row' , justifyContent:"space-between",paddingTop: 10}}>
           <Text style={styles.labelwidth}>Country:<Text style={{ color: 'red' }}></Text></Text>
           {/* <DropDownPicker
             items={[
@@ -1130,8 +1151,35 @@ export default App = ({ navigation }) => {
               }
             }
             }
-          /> */}
-          <DropDownPicker
+          /> */} 
+ <Dropdown
+            style={styles.dropdown}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconColor='black'
+            iconStyle={styles.iconStyle}
+            data={country1}
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder=""
+            value={data.country}
+            onChange={item => {
+              data.country = item.value 
+
+              if (data.country == "Outside of UK") {
+                setShouldShow(true);
+              }
+              else {
+                setShouldShow(false);
+              }
+            }
+            }
+
+          />
+          
+          {/* <DropDownPicker
             
             defaultValue={data.IsABritish}
             containerStyle={{ height: 40, width: "65%", marginLeft: 30, marginVertical: 15, }}
@@ -1141,7 +1189,7 @@ export default App = ({ navigation }) => {
             }}
             dropDownStyle={{ backgroundColor: '#ffffff' }}
             onChangeItem={(item) => data.IsABritish = item.value}
-          />
+          /> */}
 
         </View>
 
@@ -1334,8 +1382,10 @@ const styles = StyleSheet.create({
   },
 
   labelwidth: {
+  textAlign:"center", 
+  
     width: 120,
-    marginVertical: 10,
+ 
     paddingLeft: 10,
   },
   log_btn: {

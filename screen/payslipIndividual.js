@@ -24,8 +24,8 @@ export const PaySlipStack = () => {
   )
 }
 
-class payslipIndividual extends Component { 
-  
+class payslipIndividual extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -34,12 +34,12 @@ class payslipIndividual extends Component {
       taxyear: "",
       periodend: "",
       loading: true,
-      setValue:"",
+      setValue: "",
       data: [],
       error: null,
       page: 1
     };
-    RecordNotFound :false
+    RecordNotFound: false
 
     this.arrayholder = [];
   }
@@ -48,11 +48,11 @@ class payslipIndividual extends Component {
     AsyncStorage.getItem('urlPrefix').then(prefix => {
       AsyncStorage.getItem('userDetails').then(res => {
         AsyncStorage.getItem('companyCode').then(compCod => {
-      //     this.setState({
-      //       RecordNotFound:false
+          //     this.setState({
+          //       RecordNotFound:false
 
-      // })
-          this.RecordNotFound=false;
+          // })
+          this.RecordNotFound = false;
           var result = new Array();
           result = JSON.parse(res);
           let code = compCod;
@@ -61,8 +61,8 @@ class payslipIndividual extends Component {
           //loading=true;
           console.log("URL executing");
           const url = "http://" + prefix + ".nomismasolution.co.uk/AccountREST/Accountservice.svc/" + prefix + "/" + result.AuthToken + "/GetPayrollTaxYearDetails";
-         
-          console.log("JSON.stringify"+JSON.stringify(code));
+
+          console.log("JSON.stringify" + JSON.stringify(code));
 
           fetch(url, {
             method: 'POST',
@@ -71,8 +71,8 @@ class payslipIndividual extends Component {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              PayrollCompanyCode:code,
-             
+              PayrollCompanyCode: code,
+
             })
             //Request Type 
           })
@@ -88,7 +88,7 @@ class payslipIndividual extends Component {
                   //Alert.alert("No Records Found!");
                   for (let i = 0; i < len; i++) {
                     var indexvalue = responseJson.ResultInfo.taxYearInfo[i];
-                    var joined = { value: indexvalue.TaxYearCode, label: indexvalue.TaxYearName } 
+                    var joined = { value: indexvalue.TaxYearCode, label: indexvalue.TaxYearName }
                     taxyearArr.push(joined)
                   }
                   // setDropdown(temp);
@@ -98,9 +98,9 @@ class payslipIndividual extends Component {
                     taxyear: taxyearArr?.[0]?.value
 
                   });
-                  AsyncStorage.setItem('DefaultTaxyear', responseJson.ResultInfo.taxYearInfo[0].TaxYearCode.toString()); 
+                  AsyncStorage.setItem('DefaultTaxyear', responseJson.ResultInfo.taxYearInfo[0].TaxYearCode.toString());
                 }
-              
+
               }
 
               else if (responseJson.IsSuccess && this.CheckIfJsonIsEmpty(responseJson.ResultInfo) === 0) {
@@ -108,7 +108,7 @@ class payslipIndividual extends Component {
               }
               else {
                 this.state.data = "";
-              //  Alert.alert("Session Expired!");
+                //  Alert.alert("Session Expired!");
               }
             });
         });
@@ -141,7 +141,7 @@ class payslipIndividual extends Component {
   // }
 
   testScrolling = (pagenum) => {
-   
+
     AsyncStorage.getItem('DefaultTaxyear').then(taxyr => {
       AsyncStorage.getItem('urlPrefix').then(ress => {
         AsyncStorage.getItem('userDetails').then(res => {
@@ -153,25 +153,25 @@ class payslipIndividual extends Component {
             console.log("JSON.stringify==========" + JSON.stringify(res));
             console.log("result.PayrollCompanyCode==========" + result.PayrollCompanyCode);
             console.log("PayrollEmployeeCode========" + result.PayrollEmployeeCode);
-            console.log("TaxYearCode=========" +this.state.taxyear);
+            console.log("TaxYearCode=========" + this.state.taxyear);
             console.log("UserType=========" + result.UserCode);
             // const url = "http://"+ress+".nomismasolution.co.uk/AccountREST/AccountService.svc/"+ress+"/"+ result.AuthToken +"/"+result.UserCode+"/4/GetPaySlipListApp?Page="+pagenum+"&Limit=12";
             const url = "http://" + ress + ".nomismasolution.co.uk/AccountREST/AccountService.svc/" + ress + "/" + result.AuthToken + "/GetPEmployeeListByEmp";
-           console.log("taxyr============"+url); 
-            
+            console.log("taxyr============" + url);
+
             fetch(url, {
               method: 'POST',
               headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-              }, 
-              
+              },
+
               body: JSON.stringify({
-              
-                PayrollCompanyCode:  result.PayrollCompanyCode,
+
+                PayrollCompanyCode: result.PayrollCompanyCode,
                 PayrollEmployeeCode: result.PayrollEmployeeCode,
                 PeriodEnd: this.state.periodend != "" ? this.state.periodend : null,
-                TaxYearCode:this.state.taxyear,
+                TaxYearCode: this.state.taxyear,
                 UserCode: result.UserCode,
                 UserType: "4"
               })
@@ -179,35 +179,35 @@ class payslipIndividual extends Component {
             })
               .then((response) => response.json())
               .then((responseJson) => {
-                if(responseJson.IsSuccess)  //this for data hold in UI //30-10-23
+                if (responseJson.IsSuccess)  //this for data hold in UI //30-10-23
                 {
                   let Arraylength = responseJson.ResultInfo.length;
-                  if(Arraylength ==0)
+                  if (Arraylength == 0)
                     this.RecordNotFound = true;
-                if (pagenum == 1) {
-                //Alert.alert(JSON.stringify(responseJson.ResultInfo));
-                  // var result = Object.entries(responseJson.ResultInfo).filter(item => item.NetSalary === '0.0000');
+                  if (pagenum == 1) {
+                    //Alert.alert(JSON.stringify(responseJson.ResultInfo));
+                    // var result = Object.entries(responseJson.ResultInfo).filter(item => item.NetSalary === '0.0000');
 
-                  //  console.log("data.NetSalary"+ data.NetSalary);
-                  
-                  this.setState({
-                    data: responseJson.ResultInfo,
-                    loading: false,
-                    RecordNotFound: false  // 30/11/2023 change
-                    // error: responseJson.error || null,
-                    // loading: false,
-                  });
+                    //  console.log("data.NetSalary"+ data.NetSalary);
+
+                    this.setState({
+                      data: responseJson.ResultInfo,
+                      loading: false,
+                      RecordNotFound: false  // 30/11/2023 change
+                      // error: responseJson.error || null,
+                      // loading: false,
+                    });
+                  } else {
+                    this.setState({
+                      data: this.state.data.concat(responseJson.ResultInfo),
+                      // error: responseJson.error || null,
+                      loading: false,
+                    });
+                  }
                 } else {
-                  this.setState({
-                    data: this.state.data.concat(responseJson.ResultInfo),
-                    // error: responseJson.error || null,
-                    loading: false,
-                  });
+                  this.state.data = "";
+                  this.RecordNotFound = true;
                 }
-              } else {
-                this.state.data="";
-                this.RecordNotFound = true;
-              }  
               });
           });
         });
@@ -299,9 +299,9 @@ class payslipIndividual extends Component {
     //   this.testScrolling(1)
     // }[]
     return (
-      <>  
-      <HeaderComponent />
-        <View style={{ flexDirection: 'row',padding:20 }}>
+      <>
+        <HeaderComponent />
+        <View style={{ flexDirection: 'row', padding: 20 }}>
           <Text style={styles.labelwidth}>Tax Year:</Text>
           {/* <DropDownPicker
                 items={this.state.taxyeardropdown}
@@ -324,32 +324,30 @@ class payslipIndividual extends Component {
 
               />    */}
 
-              <Dropdown
+          <Dropdown
             style={styles.dropdown}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
             data={this.state.taxyeardropdown}
-              
             maxHeight={300}
             labelField="label"
             valueField="value"
-            placeholder="`Select Tax Year`"
+            placeholder=""
             value={this.state.taxyear}
             onChange={item => {
-             
-            //  setValue(item.value);
+              //  setValue(item.value);
+              // this.state.taxyear = item.value
               this.state.taxyear = item.value
-              this.state.taxyear = item.value
-              this.taxYearFilter()
+              //this.taxYearFilter()
               this.testScrolling(1)
             }}
           // renderLeftIcon={() => (
           //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
           // )}
-          /> 
-              
+          />
+
 
           {/* <Dropdown
             data={this.state.taxyeardropdown}
@@ -404,7 +402,7 @@ class payslipIndividual extends Component {
           <ScrollView>
             <View>
               <FlatList
-                style={{ borderRadius: 5, marginTop: 0, marginLeft: 15, marginRight: 15, marginVertical: 20}}
+                style={{ borderRadius: 5, marginTop: 0, marginLeft: 15, marginRight: 15, marginVertical: 20 }}
                 data={this.state.data}
                 renderItem={({ item }) => (
 
@@ -419,10 +417,10 @@ class payslipIndividual extends Component {
 
                   <View style={{ flexDirection: 'row', backgroundColor: "#fff", padding: 5, margin: 4, }}>
                     <View style={{ flexDirection: 'column', width: "30%", paddingLeft: 10, }}>
-                    <Text style={styles.monthformat}>{`${moment(item.PayrollDate, 'M/D/YYYY hh:mm:ss A').format('D')}`}    
-                  {` ${moment(item.PayrollDate, 'M/D/YYYY hh:mm:ss A').format('MMM')}`}</Text>
-                  
-                  <Text style={styles.yearformat}>{moment(item.PayrollDate, 'M/D/YYYY hh:mm:ss A').isValid() ? moment(item.PayrollDate, 'M/D/YYYY hh:mm:ss A').format('YYYY') : 'Invalid Date'}</Text>
+                      <Text style={styles.monthformat}>{`${moment(item.PayrollDate, 'M/D/YYYY hh:mm:ss A').format('D')}`}
+                        {` ${moment(item.PayrollDate, 'M/D/YYYY hh:mm:ss A').format('MMM')}`}</Text>
+
+                      <Text style={styles.yearformat}>{moment(item.PayrollDate, 'M/D/YYYY hh:mm:ss A').isValid() ? moment(item.PayrollDate, 'M/D/YYYY hh:mm:ss A').format('YYYY') : 'Invalid Date'}</Text>
 
                     </View>
                     <View style={{ flexDirection: 'column', width: "40%", alignContent: "center", }}>
@@ -504,8 +502,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     paddingLeft: 5,
     marginRight: 0,
-    marginLeft:5,
-    color:"black"
+    marginLeft: 5,
+    color: "black"
 
   },
   labelwidth1: {
@@ -530,7 +528,7 @@ const styles = StyleSheet.create({
     color: '#363739'
   }, dropdown: {
     marginTop: 16,
-    backgroundColor: '#ffffff',
+    backgroundColor: "white",
     height: 33,
     width: "80%",
     marginLeft: 0,
@@ -538,25 +536,25 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 4,
     paddingHorizontal: 8,
-   
-  },dropdown: {
-   color:"black",
-    padding:10,
+
+  }, dropdown: {
+    color: "black",
+    padding: 10,
     height: 35,
-    borderRadius:5,
-    width:"80%",
+    borderRadius: 5,
+    width: "80%",
     borderWidth: 1,
-   borderColor:"#d3d3d3",
-   
-   
+    borderColor: "#d3d3d3",
+
+
   },
   icon: {
-    paddingLeft:6,
+    paddingLeft: 6,
     marginRight: 10,
   },
   placeholderStyle: {
-    color:"black",
-    paddingLeft:10,
+    color: "black",
+    paddingLeft: 10,
     fontSize: 16,
   },
   selectedTextStyle: {
@@ -569,8 +567,8 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
-    
+
   },
 
- 
+
 })

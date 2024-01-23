@@ -41,14 +41,14 @@ import employeeList from './employeeList';
 import employeeList2 from './employeeList2';
 import companies from './companies';
 import DropDownPicker from 'react-native-dropdown-picker';
-import Icon from 'react-native-vector-icons/Feather';
+// import Icon from 'react-native-vector-icons/Feather';
 // import Spinner from 'react-native-loading-spinner-overlay';
 // import FontAwesome, {
 //   SolidIcons,
 //   RegularIcons,
 //   BrandIcons,
 // } from 'react-native-fontawesome';
- //import Icon from 'react-native-vector-icons/FontAwesome';
+ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import pendingExp from './pendingExp';
 import approvedExp from './approvedExp';

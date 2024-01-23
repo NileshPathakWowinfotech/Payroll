@@ -302,31 +302,31 @@ const Screen3 = ({ route, navigation }) => {
             }}
           /> */}
      
-          <Dropdown
-            style={styles.dropdown}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            data={taxYear}
-              
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder="`Select Tax Year`"
-            value={value}
-            onChange={item => {
-             
-              setValue(item.value);
-              data.selectedTaxYear = item.value
-              getExpDetails(data.selectedTaxYear)
-              console.log("ITEM ==== ", item.value);
-              getEmployeeExpCount(data.selectedTaxYear)
-            }}
-          // renderLeftIcon={() => (
-          //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-          // )}
-          />
+     {taxYear !==null ? (
+    <Dropdown
+      style={styles.dropdown}
+      placeholderStyle={styles.placeholderStyle}
+      selectedTextStyle={styles.selectedTextStyle}
+      inputSearchStyle={styles.inputSearchStyle}
+      iconStyle={styles.iconStyle}
+      data={taxYear}
+      maxHeight={300}
+      labelField="label"
+      valueField="value"
+      placeholder="Select an item"
+      value={data.selectedTaxYear}
+      onChange={item => {
+        setValue(item.value);
+        data.selectedTaxYear = item.value;
+        getExpDetails(data.selectedTaxYear);
+        console.log("ITEM ==== ", item.value);
+        getEmployeeExpCount(data.selectedTaxYear);
+      }}
+      renderNoData={() => <Text>No data found</Text>}
+    />
+  ) : (
+    <Text>No data found</Text>
+  )}
         </View>
         {/* <View style={style.labelinput}>
         <Text style={style.label}>Period End:</Text>
@@ -483,7 +483,7 @@ const Screen3 = ({ route, navigation }) => {
 }; 
 const styles = StyleSheet.create({
   dropdown: {
-   
+    backgroundColor:"white",
     padding:5,
     height: 35,
     borderRadius:5,
@@ -499,7 +499,8 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     paddingLeft:10,
-    fontSize: 16,
+    fontSize: 13, 
+    color:"black"
   },
   selectedTextStyle: {
     fontSize: 16,
